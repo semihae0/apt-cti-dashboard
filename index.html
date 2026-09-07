@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTI Hub // APT & Threat Actor Intelligence</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-main: #06090e;
+            --bg-panel: rgba(13, 19, 32, 0.85);
+            --border-panel: rgba(56, 189, 248, 0.18);
+            --border-hover: rgba(56, 189, 248, 0.5);
+            --cyan: #38bdf8;
+            --emerald: #10b981;
+            --crimson: #f43f5e;
+            --amber: #f59e0b;
+            --indigo: #6366f1;
+            --text-title: #ffffff;
+            --text-body: #e2e8f0;
+            --text-dim: #94a3b8;
+            --font-mono: 'Fira Code', monospace;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-main);
+            color: var(--text-body);
+            min-height: 100vh;
+            padding: 40px 24px;
+            background-image: 
+                radial-gradient(ellipse 90% 60% at 50% -20%, rgba(56, 189, 248, 0.15), transparent),
+                radial-gradient(ellipse 40% 40% at 90% 90%, rgba(16, 185, 129, 0.08), transparent),
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 35px 35px, 35px 35px;
+            background-attachment: fixed;
+        }
+
+        .container { max-width: 1350px; margin: 0 auto; }
+
+        header { text-align: center; margin-bottom: 35px; }
+        .live-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 9999px;
+            font-size: 12px; font-weight: 600; color: var(--emerald);
+            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px;
+        }
+        .pulse-light {
+            width: 8px; height: 8px; background-color: var(--emerald);
+            border-radius: 50%; box-shadow: 0 0 10px var(--emerald);
+            animation: pulseAnim 2s infinite ease-in-out;
+        }
+        @keyframes pulseAnim {
+            0%, 100% { transform: scale(0.9); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+        h1 { font-size: 34px; font-weight: 700; color: var(--text-title); letter-spacing: -0.5px; margin-bottom: 6px; }
+        header p { color: var(--text-dim); font-size: 15px; }
+
+        .search-container { max-width: 760px; margin: 0 auto 30px auto; }
+        .search-bar {
+            display: flex; align-items: center; background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border-panel); backdrop-filter: blur(16px);
+            border-radius: 12px; padding: 6px 8px 6px 18px; transition: all 0.25s ease;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+        }
+        .search-bar:focus-within {
+            border-color: var(--cyan); box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
+        }
+        .search-bar i.search-icon { color: var(--text-dim); font-size: 17px; margin-right: 12px; }
+        .search-bar input {
+            flex: 1; background: transparent; border: none; outline: none;
+            color: #fff; font-size: 15px; font-family: inherit;
+        }
+
+        /* Yarı Saydam Siber Mavi Sorgula Butonu */
+        .search-btn {
+            position: relative;
+            background: rgba(14, 165, 233, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            padding: 12px 24px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 8px;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.15), inset 0 0 12px rgba(56, 189, 248, 0.08);
+        }
+
+        .search-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.25), transparent);
+            transform: skewX(-25deg);
+            transition: 0.5s ease;
+        }
+
+        .search-btn:hover {
+            background: rgba(14, 165, 233, 0.28);
+            border-color: #38bdf8;
+            color: #ffffff;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4), inset 0 0 16px rgba(56, 189, 248, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .search-btn:hover::before {
+            left: 150%;
+        }
+
+        .search-btn:active {
+            transform: translateY(0);
+            background: rgba(14, 165, 233, 0.35);
+        }
+
+        .search-btn i {
+            font-size: 13px;
+            transition: transform 0.2s ease;
+            color: #38bdf8;
+        }
+
+        .search-btn:hover i {
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        .quick-tags { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 15px; font-size: 13px; }
+        .quick-label { color: #64748b; }
+        .tag-pill {
+            background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(148, 163, 184, 0.15);
+            color: var(--text-dim); padding: 4px 10px; border-radius: 6px; cursor: pointer;
+            font-size: 12px; font-family: var(--font-mono); transition: all 0.15s ease;
+        }
+        .tag-pill:hover { background: rgba(56, 189, 248, 0.15); color: var(--cyan); border-color: rgba(56, 189, 248, 0.35); }
+
+        /* Meta Özet Şeridi */
+        .intel-summary-bar {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 25px;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .intel-stat-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-panel);
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .intel-stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: rgba(56, 189, 248, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--cyan);
+        }
+        .intel-stat-info div:first-child { font-size: 12px; color: var(--text-dim); text-transform: uppercase; font-weight: 600; }
+        .intel-stat-info div:last-child { font-size: 16px; color: #fff; font-weight: 700; margin-top: 2px; }
+
+        /* Paneller */
+        .dash-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 24px; }
+        @media (max-width: 950px) { .dash-grid { grid-template-columns: 1fr; } }
+
+        .panel {
+            background: var(--bg-panel); backdrop-filter: blur(14px);
+            border: 1px solid var(--border-panel); border-radius: 14px;
+            padding: 24px; min-height: 520px; max-height: 800px;
+            display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        .panel-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 16px; border-bottom: 1px solid rgba(148, 163, 184, 0.1); margin-bottom: 18px;
+        }
+        .panel-header-left { display: flex; align-items: center; gap: 10px; }
+        .panel-header-left i { font-size: 20px; color: var(--cyan); }
+        .panel-header-left h2 { font-size: 17px; font-weight: 600; color: #fff; }
+        .panel-badge {
+            font-size: 12px; color: var(--text-dim); background: rgba(30, 41, 59, 0.6);
+            padding: 3px 10px; border-radius: 6px; font-family: var(--font-mono);
+        }
+        .panel-content { overflow-y: auto; flex: 1; padding-right: 6px; }
+        .panel-content::-webkit-scrollbar, .techniques-scroll::-webkit-scrollbar { width: 5px; }
+        .panel-content::-webkit-scrollbar-thumb, .techniques-scroll::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.2); border-radius: 10px; }
+
+        .threat-card {
+            background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(148, 163, 184, 0.12);
+            border-radius: 10px; padding: 20px; margin-bottom: 18px;
+            animation: fadeIn 0.35s ease forwards;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .actor-name { font-size: 19px; font-weight: 700; color: var(--cyan); display: flex; align-items: center; gap: 8px; }
+        .copy-btn { background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 14px; transition: color 0.2s; }
+        .copy-btn:hover { color: #fff; }
+        .actor-desc { font-size: 13px; line-height: 1.6; color: #cbd5e1; margin-bottom: 16px; text-align: justify; }
+
+        .badge-block { margin-bottom: 14px; }
+        .badge-title { font-size: 11px; text-transform: uppercase; color: var(--text-dim); letter-spacing: 0.5px; font-weight: 600; margin-bottom: 6px; }
+        .badge-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+        .badge-item {
+            font-size: 11.5px; padding: 3px 8px; border-radius: 4px;
+            background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(148, 163, 184, 0.15);
+            color: #e2e8f0; font-family: var(--font-mono);
+        }
+        .badge-ext-id { background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3); color: var(--cyan); }
+
+        .techniques-box {
+            background: rgba(8, 12, 20, 0.65); border: 1px solid rgba(148, 163, 184, 0.12);
+            border-radius: 8px; padding: 14px; margin-top: 14px;
+        }
+        .tech-top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 12px; flex-wrap: wrap; gap: 10px;
+        }
+        .tech-filter {
+            background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 4px; padding: 5px 10px; font-size: 11.5px; color: #fff; outline: none; width: 170px;
+        }
+        .techniques-scroll { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+        
+        .tech-card-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 6px 10px; background: rgba(245, 158, 11, 0.05);
+            border-left: 3px solid var(--amber); border-radius: 0 6px 6px 0;
+            font-family: var(--font-mono); font-size: 11.5px;
+        }
+        .tech-card-label { color: #fde68a; font-weight: 500; }
+        .tech-tactic-pill {
+            font-size: 10px; padding: 2px 7px; border-radius: 4px;
+            background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.4);
+            color: #a5b4fc;
+        }
+
+        .state-wrapper {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100%; min-height: 350px; color: #64748b; text-align: center; gap: 12px;
+        }
+        .radar {
+            width: 44px; height: 44px; border-radius: 50%;
+            border: 2px solid rgba(56, 189, 248, 0.2); border-top-color: var(--cyan);
+            animation: spinRadar 0.85s linear infinite;
+        }
+        @keyframes spinRadar { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="live-tag">
+            <span class="pulse-light"></span>
+            CTI Terminal // Active
+        </div>
+        <h1>APT & Threat Actor Intelligence</h1>
+        <p>Tehdit aktörünün kökeni, aktiflik dönemi ve MITRE ATT&CK kill-chain teknikleri</p>
+    </header>
+
+    <div class="search-container">
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="searchInput" placeholder="APT adı, Alias veya ID girin... (Örn: Lazarus, APT28)" autocomplete="off">
+            <button class="search-btn" onclick="performSearch()">
+                <span>Sorgula</span>
+                <i class="fa-solid fa-crosshairs"></i>
+            </button>
+        </div>
+
+        <div class="quick-tags">
+            <span class="quick-label">Hızlı Arama:</span>
+            <span class="tag-pill" onclick="quickQuery('Lazarus Group')">Lazarus Group</span>
+            <span class="tag-pill" onclick="quickQuery('APT28')">APT28 (Fancy Bear)</span>
+            <span class="tag-pill" onclick="quickQuery('Sandworm Team')">Sandworm</span>
+            <span class="tag-pill" onclick="quickQuery('admin@338')">admin@338</span>
+        </div>
+    </div>
+
+    <!-- Üst İstihbarat Kartı -->
+    <div class="intel-summary-bar" id="intelSummaryBar">
+        <div class="intel-stat-card">
+            <div class="intel-stat-icon"><i class="fa-solid fa-earth-americas"></i></div>
+            <div class="intel-stat-info">
+                <div>Tahmini Menşei (Ülke)</div>
+                <div id="statCountry">-</div>
+            </div>
+        </div>
+        <div class="intel-stat-card">
+            <div class="intel-stat-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <div class="intel-stat-info">
+                <div>İlk Raporlanma / Kayıt</div>
+                <div id="statFirstSeen">-</div>
+            </div>
+        </div>
+        <div class="intel-stat-card">
+            <div class="intel-stat-icon"><i class="fa-solid fa-crosshairs"></i></div>
+            <div class="intel-stat-info">
+                <div>Kullanılan Teknik Sayısı</div>
+                <div id="statTechniques">-</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sonuç Panelleri -->
+    <div class="dash-grid">
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-header-left">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h2>MITRE ATT&CK Taktik & Teknikleri</h2>
+                </div>
+                <span class="panel-badge" id="mitreCount">0 Sonuç</span>
+            </div>
+            <div id="mitreResult" class="panel-content">
+                <div class="state-wrapper">
+                    <i class="fa-solid fa-terminal"></i>
+                    <p>Sorgu bekleniyor...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-header-left">
+                    <i class="fa-solid fa-biohazard" style="color: var(--crimson);"></i>
+                    <h2>Malpedia Actor Library</h2>
+                </div>
+                <span class="panel-badge" id="malpediaCount">0 Sonuç</span>
+            </div>
+            <div id="malpediaResult" class="panel-content">
+                <div class="state-wrapper">
+                    <i class="fa-solid fa-database"></i>
+                    <p>Sorgu bekleniyor...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const searchInput = document.getElementById("searchInput");
+    searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") performSearch();
+    });
+
+    function quickQuery(name) {
+        searchInput.value = name;
+        performSearch();
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text);
+    }
+
+    function filterTech(input, listId) {
+        const query = input.value.toLowerCase();
+        const container = document.getElementById(listId);
+        if (!container) return;
+        const items = container.querySelectorAll(".tech-card-item");
+        items.forEach(item => {
+            item.style.display = item.textContent.toLowerCase().includes(query) ? "flex" : "none";
+        });
+    }
+
+    function formatMitreData(data) {
+        const badge = document.getElementById("mitreCount");
+        if (typeof data === 'string' || !Array.isArray(data) || data.length === 0) {
+            badge.innerText = "0 Sonuç";
+            return `
+                <div class="state-wrapper">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: var(--amber);"></i>
+                    <p>${typeof data === 'string' ? data : 'Eşleşen grup bulunamadı.'}</p>
+                </div>`;
+        }
+
+        badge.innerText = `${data.length} Aktör`;
+        let html = "";
+
+        data.forEach((item, idx) => {
+            const name = item.name || "Bilinmeyen Aktör";
+            const desc = item.description || "Açıklama bulunmuyor.";
+            const listId = `tech-scroll-${idx}`;
+            
+            let extIds = [];
+            if (item.external_references) {
+                extIds = item.external_references
+                    .filter(r => r.source_name === "mitre-attack" && r.external_id)
+                    .map(r => r.external_id);
+            }
+
+            const aliases = item.aliases || [];
+            const techniques = item.structured_techniques || [];
+
+            let techBlock = "";
+            if (techniques.length > 0) {
+                techBlock = `
+                <div class="techniques-box">
+                    <div class="tech-top-bar">
+                        <span class="badge-title" style="margin:0;">Kullanılan Teknikler (${techniques.length})</span>
+                        <input type="text" class="tech-filter" placeholder="Teknik veya Taktik ara..." oninput="filterTech(this, '${listId}')">
+                    </div>
+                    <div class="techniques-scroll" id="${listId}">
+                        ${techniques.map(t => `
+                            <div class="tech-card-item">
+                                <span class="tech-card-label">${t.full_label}</span>
+                                <span class="tech-tactic-pill">${t.tactics.join(', ')}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+            }
+
+            html += `
+            <div class="threat-card">
+                <div class="card-top">
+                    <div class="actor-name">
+                        ${name}
+                        <button class="copy-btn" title="Kopyala" onclick="copyToClipboard('${name.replace(/'/g, "\\'")}')">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="badge-grid">
+                        ${extIds.map(id => `<span class="badge-item badge-ext-id">${id}</span>`).join('')}
+                    </div>
+                </div>
+
+                ${aliases.length > 0 ? `
+                <div class="badge-block">
+                    <div class="badge-title">Bilinen Diğer İsimler (Aliases)</div>
+                    <div class="badge-grid">
+                        ${aliases.map(a => `<span class="badge-item">${a}</span>`).join('')}
+                    </div>
+                </div>` : ''}
+
+                <div class="actor-desc">${desc}</div>
+                ${techBlock}
+            </div>`;
+        });
+
+        return html;
+    }
+
+    function formatMalpediaData(data) {
+        const badge = document.getElementById("malpediaCount");
+        if (typeof data === 'string' || !data || !data.value) {
+            badge.innerText = "0 Sonuç";
+            return `
+                <div class="state-wrapper">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: var(--amber);"></i>
+                    <p>${typeof data === 'string' ? data : 'Eşleşen aktör bulunamadı.'}</p>
+                </div>`;
+        }
+
+        badge.innerText = "1 Aktör";
+        const name = data.value;
+        const desc = data.description || "Açıklama bulunmuyor.";
+        const synonyms = (data.meta && data.meta.synonyms) ? data.meta.synonyms : [];
+
+        return `
+        <div class="threat-card">
+            <div class="card-top">
+                <div class="actor-name" style="color: var(--crimson);">
+                    ${name}
+                    <button class="copy-btn" title="Kopyala" onclick="copyToClipboard('${name.replace(/'/g, "\\'")}')">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            ${synonyms.length > 0 ? `
+            <div class="badge-block">
+                <div class="badge-title">Eşanlamlılar / Kod Adları</div>
+                <div class="badge-grid">
+                    ${synonyms.map(s => `<span class="badge-item">${s}</span>`).join('')}
+                </div>
+            </div>` : ''}
+
+            <div class="actor-desc">${desc}</div>
+        </div>`;
+    }
+
+    async function performSearch() {
+        const query = searchInput.value.trim();
+        if (!query) return;
+
+        const loader = `
+            <div class="state-wrapper">
+                <div class="radar"></div>
+                <p>İstihbarat havuzu taranıyor...</p>
+            </div>`;
+
+        document.getElementById("mitreResult").innerHTML = loader;
+        document.getElementById("malpediaResult").innerHTML = loader;
+        document.getElementById("intelSummaryBar").style.display = "none";
+
+        try {
+            const res = await fetch(`http://localhost:8000/api/search?q=${encodeURIComponent(query)}`);
+            const data = await res.json();
+
+            document.getElementById("mitreResult").innerHTML = formatMitreData(data.mitre_attack);
+            document.getElementById("malpediaResult").innerHTML = formatMalpediaData(data.malpedia);
+
+            // Üst İstatistik Kartlarını Doldur
+            const summaryBar = document.getElementById("intelSummaryBar");
+            let countryText = "🌐 Bilinmiyor";
+            let firstSeenText = "Bilinmiyor";
+            let techCount = 0;
+
+            if (data.malpedia && data.malpedia.country_display) {
+                countryText = data.malpedia.country_display;
+            }
+
+            if (Array.isArray(data.mitre_attack) && data.mitre_attack.length > 0) {
+                const primary = data.mitre_attack[0];
+                if (primary.first_seen_year) firstSeenText = primary.first_seen_year;
+                if (primary.structured_techniques) techCount = primary.structured_techniques.length;
+            }
+
+            document.getElementById("statCountry").innerText = countryText;
+            document.getElementById("statFirstSeen").innerText = firstSeenText;
+            document.getElementById("statTechniques").innerText = `${techCount} Teknik`;
+            summaryBar.style.display = "grid";
+
+        } catch (err) {
+            const errHtml = `
+                <div class="state-wrapper">
+                    <i class="fa-solid fa-circle-xmark" style="color: var(--crimson);"></i>
+                    <p style="color: var(--crimson);">Bağlantı kurulamadı. Backend servisinizin çalıştığından emin olun.</p>
+                </div>`;
+            document.getElementById("mitreResult").innerHTML = errHtml;
+            document.getElementById("malpediaResult").innerHTML = errHtml;
+        }
+    }
+</script>
+</body>
+</html>
