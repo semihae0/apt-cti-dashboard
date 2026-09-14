@@ -33,3 +33,4 @@ Ardından kurulu olduğu dizine gidip aşağıdaki komutu girerek frontendi çal
 ```bash
 uvicorn main:app --reload
 ```
+.
