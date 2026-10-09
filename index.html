@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CTI Hub // APT & Threat Actor Intelligence</title>
-    <!-- Google Fonts & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,7 +14,6 @@
             --bg-main: #06090e;
             --bg-panel: rgba(13, 19, 32, 0.85);
             --border-panel: rgba(56, 189, 248, 0.18);
-            --border-hover: rgba(56, 189, 248, 0.5);
             --cyan: #38bdf8;
             --emerald: #10b981;
             --crimson: #f43f5e;
@@ -45,7 +43,7 @@
             background-attachment: fixed;
         }
 
-        .container { max-width: 1350px; margin: 0 auto; }
+        .container { max-width: 1450px; margin: 0 auto; }
 
         header { text-align: center; margin-bottom: 35px; }
         .live-tag {
@@ -79,16 +77,13 @@
         }
         .search-bar i.search-icon { color: var(--text-dim); font-size: 17px; margin-right: 12px; }
         .search-bar input {
-            flex: 1; background: transparent; border: none; outline: none;
+            flex: 1; min-width: 0; background: transparent; border: none; outline: none;
             color: #fff; font-size: 15px; font-family: inherit;
         }
 
-        /* Yarı Saydam Siber Mavi Sorgula Butonu */
         .search-btn {
-            position: relative;
             background: rgba(14, 165, 233, 0.15);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             color: #38bdf8;
             border: 1px solid rgba(56, 189, 248, 0.45);
             padding: 12px 24px;
@@ -99,52 +94,16 @@
             letter-spacing: 1px;
             border-radius: 8px;
             cursor: pointer;
-            overflow: hidden;
             display: flex;
             align-items: center;
             gap: 10px;
             transition: all 0.25s ease;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.15), inset 0 0 12px rgba(56, 189, 248, 0.08);
         }
-
-        .search-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.25), transparent);
-            transform: skewX(-25deg);
-            transition: 0.5s ease;
-        }
-
         .search-btn:hover {
             background: rgba(14, 165, 233, 0.28);
             border-color: #38bdf8;
             color: #ffffff;
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4), inset 0 0 16px rgba(56, 189, 248, 0.2);
-            transform: translateY(-1px);
-        }
-
-        .search-btn:hover::before {
-            left: 150%;
-        }
-
-        .search-btn:active {
-            transform: translateY(0);
-            background: rgba(14, 165, 233, 0.35);
-        }
-
-        .search-btn i {
-            font-size: 13px;
-            transition: transform 0.2s ease;
-            color: #38bdf8;
-        }
-
-        .search-btn:hover i {
-            color: #ffffff;
-            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
         }
 
         .quick-tags { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 15px; font-size: 13px; }
@@ -156,7 +115,6 @@
         }
         .tag-pill:hover { background: rgba(56, 189, 248, 0.15); color: var(--cyan); border-color: rgba(56, 189, 248, 0.35); }
 
-        /* Meta Özet Şeridi */
         .intel-summary-bar {
             display: none;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -187,26 +145,29 @@
         .intel-stat-info div:first-child { font-size: 12px; color: var(--text-dim); text-transform: uppercase; font-weight: 600; }
         .intel-stat-info div:last-child { font-size: 16px; color: #fff; font-weight: 700; margin-top: 2px; }
 
-        /* Paneller */
-        .dash-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 24px; }
-        @media (max-width: 950px) { .dash-grid { grid-template-columns: 1fr; } }
+        .dash-grid { 
+            display: grid; 
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.9fr) minmax(0, 0.95fr); 
+            gap: 20px; 
+        }
+        @media (max-width: 1200px) { .dash-grid { grid-template-columns: 1fr; } }
 
         .panel {
             background: var(--bg-panel); backdrop-filter: blur(14px);
             border: 1px solid var(--border-panel); border-radius: 14px;
-            padding: 24px; min-height: 520px; max-height: 800px;
+            min-width: 0; padding: 22px; min-height: 520px; max-height: 750px;
             display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
         .panel-header {
             display: flex; justify-content: space-between; align-items: center;
-            padding-bottom: 16px; border-bottom: 1px solid rgba(148, 163, 184, 0.1); margin-bottom: 18px;
+            padding-bottom: 14px; border-bottom: 1px solid rgba(148, 163, 184, 0.1); margin-bottom: 16px;
         }
         .panel-header-left { display: flex; align-items: center; gap: 10px; }
-        .panel-header-left i { font-size: 20px; color: var(--cyan); }
-        .panel-header-left h2 { font-size: 17px; font-weight: 600; color: #fff; }
+        .panel-header-left i { font-size: 18px; }
+        .panel-header-left h2 { font-size: 15.5px; font-weight: 600; color: #fff; }
         .panel-badge {
-            font-size: 12px; color: var(--text-dim); background: rgba(30, 41, 59, 0.6);
-            padding: 3px 10px; border-radius: 6px; font-family: var(--font-mono);
+            font-size: 11.5px; color: var(--text-dim); background: rgba(30, 41, 59, 0.6);
+            padding: 3px 9px; border-radius: 6px; font-family: var(--font-mono);
         }
         .panel-content { overflow-y: auto; flex: 1; padding-right: 6px; }
         .panel-content::-webkit-scrollbar, .techniques-scroll::-webkit-scrollbar { width: 5px; }
@@ -214,22 +175,22 @@
 
         .threat-card {
             background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(148, 163, 184, 0.12);
-            border-radius: 10px; padding: 20px; margin-bottom: 18px;
+            border-radius: 10px; padding: 16px; margin-bottom: 15px;
             animation: fadeIn 0.35s ease forwards;
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-        .actor-name { font-size: 19px; font-weight: 700; color: var(--cyan); display: flex; align-items: center; gap: 8px; }
-        .copy-btn { background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 14px; transition: color 0.2s; }
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .actor-name { font-size: 16px; font-weight: 700; color: var(--cyan); display: flex; align-items: center; gap: 8px; word-break: break-all; }
+        .copy-btn { background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 13px; transition: color 0.2s; }
         .copy-btn:hover { color: #fff; }
-        .actor-desc { font-size: 13px; line-height: 1.6; color: #cbd5e1; margin-bottom: 16px; text-align: justify; }
+        .actor-desc { font-size: 12.5px; line-height: 1.6; color: #cbd5e1; margin-bottom: 14px; text-align: left; overflow-wrap: anywhere; }
 
-        .badge-block { margin-bottom: 14px; }
+        .badge-block { margin-bottom: 12px; }
         .badge-title { font-size: 11px; text-transform: uppercase; color: var(--text-dim); letter-spacing: 0.5px; font-weight: 600; margin-bottom: 6px; }
         .badge-grid { display: flex; flex-wrap: wrap; gap: 6px; }
         .badge-item {
-            font-size: 11.5px; padding: 3px 8px; border-radius: 4px;
+            font-size: 11px; padding: 3px 8px; border-radius: 4px;
             background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(148, 163, 184, 0.15);
             color: #e2e8f0; font-family: var(--font-mono);
         }
@@ -237,37 +198,37 @@
 
         .techniques-box {
             background: rgba(8, 12, 20, 0.65); border: 1px solid rgba(148, 163, 184, 0.12);
-            border-radius: 8px; padding: 14px; margin-top: 14px;
+            border-radius: 8px; padding: 12px; margin-top: 12px;
         }
         .tech-top-bar {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 12px; flex-wrap: wrap; gap: 10px;
+            margin-bottom: 10px; flex-wrap: wrap; gap: 8px;
         }
         .tech-filter {
             background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(148, 163, 184, 0.2);
-            border-radius: 4px; padding: 5px 10px; font-size: 11.5px; color: #fff; outline: none; width: 170px;
+            border-radius: 4px; padding: 4px 8px; font-size: 11px; color: #fff; outline: none; width: 140px;
         }
-        .techniques-scroll { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+        .techniques-scroll { max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; }
         
         .tech-card-item {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 6px 10px; background: rgba(245, 158, 11, 0.05);
-            border-left: 3px solid var(--amber); border-radius: 0 6px 6px 0;
-            font-family: var(--font-mono); font-size: 11.5px;
+            padding: 5px 8px; background: rgba(245, 158, 11, 0.05);
+            border-left: 3px solid var(--amber); border-radius: 0 4px 4px 0;
+            font-family: var(--font-mono); font-size: 11px;
         }
         .tech-card-label { color: #fde68a; font-weight: 500; }
         .tech-tactic-pill {
-            font-size: 10px; padding: 2px 7px; border-radius: 4px;
+            font-size: 9.5px; padding: 2px 6px; border-radius: 4px;
             background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.4);
             color: #a5b4fc;
         }
 
         .state-wrapper {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100%; min-height: 350px; color: #64748b; text-align: center; gap: 12px;
+            height: 100%; min-height: 300px; color: #64748b; text-align: center; gap: 12px;
         }
         .radar {
-            width: 44px; height: 44px; border-radius: 50%;
+            width: 40px; height: 40px; border-radius: 50%;
             border: 2px solid rgba(56, 189, 248, 0.2); border-top-color: var(--cyan);
             animation: spinRadar 0.85s linear infinite;
         }
@@ -280,16 +241,16 @@
     <header>
         <div class="live-tag">
             <span class="pulse-light"></span>
-            CTI Terminal // Active
+            CTI Terminal
         </div>
         <h1>APT & Threat Actor Intelligence</h1>
-        <p>Tehdit aktörünün kökeni, aktiflik dönemi ve MITRE ATT&CK kill-chain teknikleri</p>
+        <p>MITRE ATT&CK, Malpedia ve MISP Threat Galaxy istihbarat kaynaklarını karşılaştıran arama konsolu</p>
     </header>
 
     <div class="search-container">
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="searchInput" placeholder="APT adı, Alias veya ID girin... (Örn: Lazarus, APT28)" autocomplete="off">
+            <input type="text" id="searchInput" maxlength="120" aria-label="Aktör arama" placeholder="APT adı, Alias veya ID girin... (Örn: Lazarus, APT28)" autocomplete="off">
             <button class="search-btn" onclick="performSearch()">
                 <span>Sorgula</span>
                 <i class="fa-solid fa-crosshairs"></i>
@@ -305,38 +266,39 @@
         </div>
     </div>
 
-    <!-- Üst İstihbarat Kartı -->
+    
     <div class="intel-summary-bar" id="intelSummaryBar">
         <div class="intel-stat-card">
             <div class="intel-stat-icon"><i class="fa-solid fa-earth-americas"></i></div>
             <div class="intel-stat-info">
-                <div>Tahmini Menşei (Ülke)</div>
+                <div>Seçili MITRE Aktörü</div>
                 <div id="statCountry">-</div>
             </div>
         </div>
         <div class="intel-stat-card">
             <div class="intel-stat-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
             <div class="intel-stat-info">
-                <div>İlk Raporlanma / Kayıt</div>
+                <div>MITRE Kayıt Yılı</div>
                 <div id="statFirstSeen">-</div>
             </div>
         </div>
         <div class="intel-stat-card">
             <div class="intel-stat-icon"><i class="fa-solid fa-crosshairs"></i></div>
             <div class="intel-stat-info">
-                <div>Kullanılan Teknik Sayısı</div>
+                <div>MITRE Doğrudan Teknik Sayısı</div>
                 <div id="statTechniques">-</div>
             </div>
         </div>
     </div>
 
-    <!-- Sonuç Panelleri -->
+    
     <div class="dash-grid">
+        
         <div class="panel">
             <div class="panel-header">
                 <div class="panel-header-left">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <h2>MITRE ATT&CK Taktik & Teknikleri</h2>
+                    <i class="fa-solid fa-shield-halved" style="color: var(--cyan);"></i>
+                    <h2>MITRE ATT&CK</h2>
                 </div>
                 <span class="panel-badge" id="mitreCount">0 Sonuç</span>
             </div>
@@ -348,6 +310,7 @@
             </div>
         </div>
 
+        
         <div class="panel">
             <div class="panel-header">
                 <div class="panel-header-left">
@@ -363,10 +326,41 @@
                 </div>
             </div>
         </div>
+
+        
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-header-left">
+                    <i class="fa-solid fa-globe" style="color: var(--emerald);"></i>
+                    <h2>MISP Threat Galaxy</h2>
+                </div>
+                <span class="panel-badge" id="mispCount">0 Sonuç</span>
+            </div>
+            <div id="mispResult" class="panel-content">
+                <div class="state-wrapper">
+                    <i class="fa-solid fa-diagram-project"></i>
+                    <p>Sorgu bekleniyor...</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
+    let searchController = null;
+    let searchId = 0;
+
+    function escapeHTML(value) {
+        return String(value ?? '').replace(/[&<>"']/g, char => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[char]);
+    }
+
+    document.addEventListener('click', event => {
+        const button = event.target.closest('[data-copy]');
+        if (button) copyToClipboard(button.dataset.copy, button);
+    });
+
     const searchInput = document.getElementById("searchInput");
     searchInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") performSearch();
@@ -377,8 +371,15 @@
         performSearch();
     }
 
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text);
+    async function copyToClipboard(text, button) {
+        try {
+            await navigator.clipboard.writeText(text);
+            button.title = "Kopyalandı";
+            button.textContent = "✓";
+        } catch {
+            button.title = "Kopyalanamadı";
+            button.textContent = "!";
+        }
     }
 
     function filterTech(input, listId) {
@@ -398,7 +399,7 @@
             return `
                 <div class="state-wrapper">
                     <i class="fa-solid fa-triangle-exclamation" style="color: var(--amber);"></i>
-                    <p>${typeof data === 'string' ? data : 'Eşleşen grup bulunamadı.'}</p>
+                    <p>${typeof data === 'string' ? escapeHTML(data) : 'Eşleşen grup bulunamadı.'}</p>
                 </div>`;
         }
 
@@ -426,13 +427,13 @@
                 <div class="techniques-box">
                     <div class="tech-top-bar">
                         <span class="badge-title" style="margin:0;">Kullanılan Teknikler (${techniques.length})</span>
-                        <input type="text" class="tech-filter" placeholder="Teknik veya Taktik ara..." oninput="filterTech(this, '${listId}')">
+                        <input type="text" class="tech-filter" placeholder="Filtrele..." oninput="filterTech(this, '${listId}')">
                     </div>
                     <div class="techniques-scroll" id="${listId}">
                         ${techniques.map(t => `
                             <div class="tech-card-item">
-                                <span class="tech-card-label">${t.full_label}</span>
-                                <span class="tech-tactic-pill">${t.tactics.join(', ')}</span>
+                                <span class="tech-card-label">${escapeHTML(t.full_label)}</span>
+                                <span class="tech-tactic-pill">${escapeHTML(t.tactics.join(', '))}</span>
                             </div>
                         `).join('')}
                     </div>
@@ -443,13 +444,13 @@
             <div class="threat-card">
                 <div class="card-top">
                     <div class="actor-name">
-                        ${name}
-                        <button class="copy-btn" title="Kopyala" onclick="copyToClipboard('${name.replace(/'/g, "\\'")}')">
+                        ${escapeHTML(name)}
+                        <button class="copy-btn" title="Kopyala" data-copy="${escapeHTML(name)}">
                             <i class="fa-regular fa-copy"></i>
                         </button>
                     </div>
                     <div class="badge-grid">
-                        ${extIds.map(id => `<span class="badge-item badge-ext-id">${id}</span>`).join('')}
+                        ${extIds.map(id => `<span class="badge-item badge-ext-id">${escapeHTML(id)}</span>`).join('')}
                     </div>
                 </div>
 
@@ -457,11 +458,11 @@
                 <div class="badge-block">
                     <div class="badge-title">Bilinen Diğer İsimler (Aliases)</div>
                     <div class="badge-grid">
-                        ${aliases.map(a => `<span class="badge-item">${a}</span>`).join('')}
+                        ${aliases.map(a => `<span class="badge-item">${escapeHTML(a)}</span>`).join('')}
                     </div>
                 </div>` : ''}
 
-                <div class="actor-desc">${desc}</div>
+                <div class="actor-desc">${escapeHTML(desc)}</div>
                 ${techBlock}
             </div>`;
         });
@@ -476,7 +477,7 @@
             return `
                 <div class="state-wrapper">
                     <i class="fa-solid fa-triangle-exclamation" style="color: var(--amber);"></i>
-                    <p>${typeof data === 'string' ? data : 'Eşleşen aktör bulunamadı.'}</p>
+                    <p>${typeof data === 'string' ? escapeHTML(data) : 'Eşleşen aktör bulunamadı.'}</p>
                 </div>`;
         }
 
@@ -489,8 +490,8 @@
         <div class="threat-card">
             <div class="card-top">
                 <div class="actor-name" style="color: var(--crimson);">
-                    ${name}
-                    <button class="copy-btn" title="Kopyala" onclick="copyToClipboard('${name.replace(/'/g, "\\'")}')">
+                    ${escapeHTML(name)}
+                    <button class="copy-btn" title="Kopyala" data-copy="${escapeHTML(name)}">
                         <i class="fa-regular fa-copy"></i>
                     </button>
                 </div>
@@ -500,17 +501,73 @@
             <div class="badge-block">
                 <div class="badge-title">Eşanlamlılar / Kod Adları</div>
                 <div class="badge-grid">
-                    ${synonyms.map(s => `<span class="badge-item">${s}</span>`).join('')}
+                    ${synonyms.map(s => `<span class="badge-item">${escapeHTML(s)}</span>`).join('')}
                 </div>
             </div>` : ''}
 
-            <div class="actor-desc">${desc}</div>
+            <div class="actor-desc">${escapeHTML(desc)}</div>
+            <div class="badge-title">Malpedia ülke bilgisi: ${escapeHTML(data.country_display || "Bilinmiyor")}</div>
         </div>`;
+    }
+
+    function formatMispData(data) {
+        const badge = document.getElementById("mispCount");
+        if (typeof data === 'string' || !Array.isArray(data) || data.length === 0) {
+            badge.innerText = "0 Sonuç";
+            return `
+                <div class="state-wrapper">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: var(--amber);"></i>
+                    <p>${typeof data === 'string' ? escapeHTML(data) : 'MISP Galaxy eşleşmesi bulunamadı.'}</p>
+                </div>`;
+        }
+
+        badge.innerText = `${data.length} Kayıt`;
+        let html = "";
+
+        data.forEach(item => {
+            const name = item.name || "Bilinmiyor";
+            const desc = item.description || "Açıklama bulunmuyor.";
+            const synonyms = item.synonyms || [];
+            const sponsor = item.cfr_suspected_state_sponsor || "";
+
+            html += `
+            <div class="threat-card">
+                <div class="card-top">
+                    <div class="actor-name" style="color: var(--emerald); font-size: 15px;">
+                        ${escapeHTML(name)}
+                        <button class="copy-btn" title="Kopyala" data-copy="${escapeHTML(name)}">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                    ${sponsor ? `<span class="badge-item" style="background: rgba(16, 185, 129, 0.15); color: var(--emerald); border-color: rgba(16, 185, 129, 0.3);">${escapeHTML(sponsor)}</span>` : ''}
+                </div>
+
+                ${synonyms.length > 0 ? `
+                <div class="badge-block">
+                    <div class="badge-title">Diğer İsimler</div>
+                    <div class="badge-grid">
+                        ${synonyms.slice(0, 8).map(s => `<span class="badge-item">${escapeHTML(s)}</span>`).join('')}
+                    </div>
+                </div>` : ''}
+
+                <div class="actor-desc" style="font-size: 12px; margin-bottom: 0;">${escapeHTML(desc)}</div>
+            </div>`;
+        });
+
+        return html;
     }
 
     async function performSearch() {
         const query = searchInput.value.trim();
-        if (!query) return;
+        if (!query || query.length > 120) return;
+        searchController?.abort();
+        searchController = new AbortController();
+        const controller = searchController;
+        const currentId = ++searchId;
+        const timeout = setTimeout(() => controller.abort(), 15000);
+        for (const id of ['mitreCount', 'malpediaCount', 'mispCount']) {
+            document.getElementById(id).innerText = '0 Sonuç';
+        }
 
         const loader = `
             <div class="state-wrapper">
@@ -520,44 +577,61 @@
 
         document.getElementById("mitreResult").innerHTML = loader;
         document.getElementById("malpediaResult").innerHTML = loader;
+        document.getElementById("mispResult").innerHTML = loader;
         document.getElementById("intelSummaryBar").style.display = "none";
 
         try {
-            const res = await fetch(`http://localhost:8000/api/search?q=${encodeURIComponent(query)}`);
+            if (location.protocol === 'file:') {
+                throw new Error('main.py dosyasını çalıştırıp http://127.0.0.1:8000 adresini açın.');
+            }
+            const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`, {signal: controller.signal});
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`);
+            }
             const data = await res.json();
+            if (currentId !== searchId) return;
+            if (!data || !['mitre_attack', 'malpedia', 'misp_galaxy'].every(key => key in data) ||
+                !(typeof data.mitre_attack === 'string' || Array.isArray(data.mitre_attack)) ||
+                !(typeof data.misp_galaxy === 'string' || Array.isArray(data.misp_galaxy)) ||
+                !(typeof data.malpedia === 'string' || (data.malpedia && typeof data.malpedia === 'object' && !Array.isArray(data.malpedia)))) {
+                throw new Error('API yanıtı geçersiz. main.py ve index.html aynı sürüm olmalı.');
+            }
 
             document.getElementById("mitreResult").innerHTML = formatMitreData(data.mitre_attack);
             document.getElementById("malpediaResult").innerHTML = formatMalpediaData(data.malpedia);
+            document.getElementById("mispResult").innerHTML = formatMispData(data.misp_galaxy);
 
-            // Üst İstatistik Kartlarını Doldur
             const summaryBar = document.getElementById("intelSummaryBar");
-            let countryText = "🌐 Bilinmiyor";
+            let countryText = "Bilinmiyor";
             let firstSeenText = "Bilinmiyor";
             let techCount = 0;
 
-            if (data.malpedia && data.malpedia.country_display) {
-                countryText = data.malpedia.country_display;
-            }
 
-            if (Array.isArray(data.mitre_attack) && data.mitre_attack.length > 0) {
+            if (Array.isArray(data.mitre_attack) && data.mitre_attack.length === 1) {
                 const primary = data.mitre_attack[0];
-                if (primary.first_seen_year) firstSeenText = primary.first_seen_year;
+                countryText = primary.name;
+                if (primary.record_created_year) firstSeenText = primary.record_created_year;
                 if (primary.structured_techniques) techCount = primary.structured_techniques.length;
             }
 
             document.getElementById("statCountry").innerText = countryText;
             document.getElementById("statFirstSeen").innerText = firstSeenText;
             document.getElementById("statTechniques").innerText = `${techCount} Teknik`;
-            summaryBar.style.display = "grid";
+            summaryBar.style.display = Array.isArray(data.mitre_attack) && data.mitre_attack.length === 1 ? "grid" : "none";
 
         } catch (err) {
+            if (currentId !== searchId) return;
+            const message = err.name === 'AbortError' ? 'İstek zaman aşımına uğradı. Yeniden sorgulayın.' : err.message;
             const errHtml = `
                 <div class="state-wrapper">
                     <i class="fa-solid fa-circle-xmark" style="color: var(--crimson);"></i>
-                    <p style="color: var(--crimson);">Bağlantı kurulamadı. Backend servisinizin çalıştığından emin olun.</p>
+                    <p style="color: var(--crimson);">${escapeHTML(message)}</p>
                 </div>`;
             document.getElementById("mitreResult").innerHTML = errHtml;
             document.getElementById("malpediaResult").innerHTML = errHtml;
+            document.getElementById("mispResult").innerHTML = errHtml;
+        } finally {
+            clearTimeout(timeout);
         }
     }
 </script>
